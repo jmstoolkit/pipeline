@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT database (driver, url, username, password)>
+<!ELEMENT defaultDatabase (driver, url, username, password)>
+<!ELEMENT driver (#PCDATA)>
+<!ELEMENT dstPath (#PCDATA)>
+<!ELEMENT element (srcPath, sql, dstPath?, database?)>
+<!ELEMENT elements (element+)>
+<!ELEMENT enrich (defaultDatabase, elements)>
+<!ELEMENT password (#PCDATA)>
+<!ELEMENT sql (#PCDATA)>
+<!ELEMENT srcPath (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT username (#PCDATA)>

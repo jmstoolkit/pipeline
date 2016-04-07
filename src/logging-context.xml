@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+  <!-- JMS object setup for sending messages to the Logging Topic.
+  Relies on definitions in the infrastructure-context.xml file. -->
+
+  <!-- This should create a new JMS connection pool just for the logging -->
+  <bean id="loggingConnectionFactory"
+    class="org.springframework.jms.connection.CachingConnectionFactory">
+    <property name="targetConnectionFactory" ref="connectionFactory"/>
+    <property name="cacheProducers" value="true"/>
+  </bean>
+
+  <bean id="loggingTemplate" class="org.springframework.jms.core.JmsTemplate">
+    <property name="connectionFactory" ref="loggingConnectionFactory" />
+    <property name="defaultDestination" ref="loggingTopic" />
+  </bean>
+
+  <bean id="loggingTopic"
+    class="org.springframework.jndi.JndiObjectFactoryBean">
+    <property name="jndiTemplate" ref="jndiTemplate" />
+    <property name="jndiName"
+      value="${jmstoolkit.pipeline.logging.destination}"/>
+  </bean>
+
+  <!-- end JMS setup -->
+
+  <!-- java.util.logging setup -->
+  <bean id="formatter" class="com.jmstoolkit.logging.JTKXMLFormatter"/>
+  <bean id="consoleFormatter" class="com.jmstoolkit.logging.JTKConsoleFormatter"/>
+
+  <bean id="logHandler" class="com.jmstoolkit.logging.JTKHandler">
+    <property name="jndiTemplate" ref="jndiTemplate"/>
+    <property name="jmsTemplate" ref="loggingTemplate"/>
+    <property name="formatter" ref="formatter"/>
+  </bean>
+
+  <bean id="consoleHandler" class="java.util.logging.ConsoleHandler">
+    <property name="formatter" ref="consoleFormatter"/>
+  </bean>
+
+  <bean id="loggers" class="com.jmstoolkit.logging.JTKLogging"
+    lazy-init="false" init-method="createLoggers">
+    <property name="logHandler" ref="logHandler"/>
+    <property name="consoleHandler" ref="consoleHandler"/>
+    <property name="useParentHandlers" value="false"/>
+    <property name="loggerProperties">
+    <!-- set the log level for any loggers by class name here: -->
+    <value>
+      JTKCONSOLE=ALL
+      com.jmstoolkit=ALL
+      org.hibernate=ALL
+      org.springframework=ALL
+    </value>
+    </property>
+  </bean>
+
+</beans>

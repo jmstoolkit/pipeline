@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plugin SYSTEM "dtd/action.dtd">
+<plugin>
+  <action>new</action>
+  <name>VAL1</name>
+  <version>1</version>
+  <type>com.jmstoolkit.pipeline.plugin.XMLValueTransformer</type>
+  <work>
+  <![CDATA[ 
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Library  SYSTEM "dtd/enrich.dtd">
+<enrich>
+  <defaultDatabase>
+    <driver>com.mysql.jdbc.MySQLDriver</driver>
+    <url>myql://localhost:3306</url>
+    <username>test</username>
+    <password>test</password>
+  </defaultDatabase>
+  <elements>
+    <element>
+      <srcPath>/some/xpath</srcPath>
+      <sql>select name from people where name=?</sql>
+      <!--dstPath>/some/other/xpath</dstPath-->
+      <!-- optional unique DB -->
+      <!--database>
+        <driver/>
+        <url/>
+        <username/>
+        <password/>
+      </database-->
+    </element>
+  </elements>
+</enrich>
+  ]]>
+  </work>
+  <destinations>
+    <input>dynamicTopics/PL2.INPUT</input>
+    <output>dynamicTopics/PL2.OUTPUT</output>
+    <replyto>dynamicTopics/PL.REPLYTO</replyto>
+  </destinations>
+</plugin>

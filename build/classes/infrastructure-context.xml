@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans 
+  http://www.springframework.org/schema/beans/spring-beans.xsd">
+<!--
+  <bean id="velocityEngine"
+    class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+    <property name="velocityProperties">
+      <value>
+        resource.loader=class
+        class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+      </value>
+    </property>
+  </bean>
+  -->
+  
+  <bean id="propertyConfigurer"
+    class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE"/>
+    <property name="locations">
+      <list>
+        <value>file:${user.dir}/app.properties</value>
+        <value>file:${user.dir}/jndi.properties</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
+    <!--property name="environment">
+      <props>
+        <prop key="java.naming.factory.initial">
+          ${java.naming.factory.initial}
+        </prop>
+        <prop key="java.naming.provider.url">
+          ${java.naming.provider.url}
+        </prop>
+        <prop key="java.naming.security.principal">${java.naming.security.principal}</prop>
+        <prop key="java.naming.security.credentials">${java.naming.security.credentials}</prop>
+      </props>
+    </property-->
+  </bean>
+
+</beans>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plugin SYSTEM "dtd/action.dtd">
+<plugin>
+  <action>new</action>
+  <name>FILE1</name>
+  <version>1</version>
+  <type>com.jmstoolkit.pipeline.plugin.FilePersistence</type>
+  <!-- the configuration for the plugin goes in the work tag -->
+  <work>
+  <![CDATA[ 
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE file SYSTEM "dtd/file.dtd">
+<file>
+  <prefix>swd-</prefix>
+  <name>out1</name>
+  <suffix>.txt</suffix>
+  <correlationid>1</correlationid>
+  <path>/Users/scott/work</path>
+  <correlationiddir>0</correlationiddir>
+  <properties>1</properties>
+  <timestamp>1</timestamp>
+  <timestampformat>yyyy-MM-dd'T'HH:mm:ss.SSSZ</timestampformat>
+</file>
+  ]]>
+  </work>
+  <destinations>
+    <input>dynamicTopics/PL1.INPUT</input>
+    <output>dynamicTopics/PL2.INPUT</output>
+    <replyto>dynamicTopics/PL.REPLYTO</replyto>
+  </destinations>
+</plugin>

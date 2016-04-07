@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!ELEMENT action (#PCDATA)>
+<!ELEMENT type (#PCDATA)>
+<!ELEMENT url (#PCDATA)>
+<!ELEMENT version (#PCDATA)>
+<!ELEMENT destinations (input, output?, replyto?)>
+<!ELEMENT replyto (#PCDATA)>
+<!ELEMENT input (#PCDATA)>
+<!ELEMENT name (#PCDATA)>
+<!ELEMENT output (#PCDATA)>
+<!ELEMENT plugin (action, name, version, type, url?, work, destinations)>
+<!ATTLIST plugin
+  xmlns:xsi CDATA #IMPLIED
+  xsi:noNamespaceSchemaLocation CDATA #IMPLIED
+>
+<!ELEMENT work (#PCDATA)>
+
