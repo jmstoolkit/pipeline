@@ -42,7 +42,7 @@ import org.springframework.jndi.JndiTemplate;
 
 /**
  *
- * @author scott
+ * @author Scott Douglass
  */
 public abstract class AbstractPipeline implements MessageListener {
 
@@ -52,57 +52,74 @@ public abstract class AbstractPipeline implements MessageListener {
   public static final Logger CONSOLE
     = Logger.getLogger(JTKLogging.CONSOLE_LOGGER_NAME);
   /**
-   *    */
+   *
+   */
   public static final String ACTION_NEW = "new";
   /**
-   *    */
+   *
+   */
   public static final String ACTION_STOP = "stop";
   /**
-   *    */
+   *
+   */
   public static final String ACTION_UPDATE = "update";
   /**
-   *    */
+   *
+   */
   private ClassPathXmlApplicationContext applicationContext;
   /**
-   *    */
+   *
+   */
   private final Map<String, Plugin> plugins
     = new ConcurrentHashMap<>();
   /**
-   *    */
+   *
+   */
   private JndiTemplate jndiTemplate;
   /**
-   *    */
+   *
+   */
   private JmsTemplate jmsTemplate;
   /**
-   *    */
+   *
+   */
   private ConnectionFactory connectionFactory;
   /**
-   *    */
+   *
+   */
   private Destination configTopic;
   /**
-   *    */
+   *
+   */
   public static final String FILE_SEPARATOR
     = System.getProperty("file.separator");
   /**
-   *    */
+   *
+   */
   public static final String USER_DIR = System.getProperty("user.dir");
   /**
-   *    */
+   *
+   */
   private boolean validated = true;
   /**
-   *    */
+   *
+   */
   private boolean persisted = true;
   /**
-   *    */
+   *
+   */
   private String startupDirName = USER_DIR + FILE_SEPARATOR + "startup";
   /**
-   *    */
+   *
+   */
   private String pluginDirName = USER_DIR + FILE_SEPARATOR + "plugins";
   /**
-   *    */
+   *
+   */
   private Integer messageCount = 0;
   /**
-   *    */
+   *
+   */
   public static final boolean USE_PLUGINS = true;
 
   /**
@@ -173,7 +190,7 @@ public abstract class AbstractPipeline implements MessageListener {
    *
    * @param doc The dom4j <code>Document</code> of the XML message.
    * @return An implementation of the <code>Plugin</code> interface.
-   * @throws PipelineException
+   * @throws PipelineException on error
    */
   public final Plugin getPlugin(final Document doc) throws PipelineException {
     Plugin plugin = null;

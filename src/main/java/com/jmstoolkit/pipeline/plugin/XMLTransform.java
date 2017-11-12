@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * An implementation of the {@link Transform} interface which uses an
+ * An implementation of the {@link com.jmstoolkit.pipeline.Plugin} interface which uses an
  * {@link XSLTransformer} to transform an input XML message and publish
  * the transformed XML message.
  *

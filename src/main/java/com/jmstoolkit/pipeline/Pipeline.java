@@ -105,10 +105,10 @@ public class Pipeline extends AbstractPipeline {
 
   /**
    * Recieves JMS message and decides what to do.
-   *   <li>Create a new Plugin task
+   *   <ul><li>Create a new Plugin task
    *   <li>Reconfigure and existing Plugin task
    *   <li>Destroy an existing Plugin task
-   *
+   *  </ul>
    * @param message Incoming JMS Message
    */
   @Override

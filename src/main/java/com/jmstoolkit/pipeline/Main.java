@@ -27,7 +27,7 @@ public class Main {
 
   /**
    *
-   * @param args
+   * @param args The command line arguments
    */
   public static void main(final String[] args) {
     try {
@@ -39,21 +39,21 @@ public class Main {
       System.exit(1);
     }
 
-    final ClassPathXmlApplicationContext applicationContext =
-      new ClassPathXmlApplicationContext(
-      new String[]{"/infrastructure-context.xml",
-        "/mdb-context.xml",
-        "/jmx-context.xml",
-        "/logging-context.xml"});
+    final ClassPathXmlApplicationContext applicationContext
+      = new ClassPathXmlApplicationContext(
+        new String[]{"/infrastructure-context.xml",
+          "/mdb-context.xml",
+          "/jmx-context.xml",
+          "/logging-context.xml"});
     applicationContext.start();
 
-    final DefaultMessageListenerContainer dmlc =
-      (DefaultMessageListenerContainer) applicationContext.getBean(
-      "listenerContainer");
+    final DefaultMessageListenerContainer dmlc
+      = (DefaultMessageListenerContainer) applicationContext.getBean(
+        "listenerContainer");
     if (dmlc != null) {
       dmlc.start();
-      final Pipeline pipeline =
-        (Pipeline) applicationContext.getBean("pipelineService");
+      final Pipeline pipeline
+        = (Pipeline) applicationContext.getBean("pipelineService");
       // enable access to the original application context
       pipeline.setApplicationContext(applicationContext);
 

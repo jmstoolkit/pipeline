@@ -22,7 +22,7 @@ public class XSLTransformerException extends Exception {
 
   /**
    *
-   * @param inMessage
+   * @param inMessage String for message
    */
   public XSLTransformerException(final String inMessage) {
     super(inMessage);
@@ -30,8 +30,8 @@ public class XSLTransformerException extends Exception {
 
   /**
    * 
-   * @param inMessage
-   * @param inException
+   * @param inMessage The message
+   * @param inException The original Exception
    */
   public XSLTransformerException(final String inMessage,
     final Throwable inException) {

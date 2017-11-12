@@ -38,26 +38,34 @@ import java.util.logging.Logger;
 import org.dom4j.Node;
 
 /**
- * An implementation of the {@link Transform} interface which replaces
- * values in XML with values from an SQL query. Uses JDBC for database
- * connections.
+ * An implementation of the {@link com.jmstoolkit.pipeline.AbstractPlugin}
+ * interface which replaces values in XML with values from an SQL query. Uses
+ * JDBC for database connections.
  *
  * @author Scott Douglass
  */
 public class XMLValueTransform extends AbstractPlugin {
 
-  /** Logger for this class. */
-  private static final Logger LOGGER =
-    Logger.getLogger(XMLValueTransform.class.getName());
-  /** Use a pooling JDBC DataSource by default. */
+  /**
+   * Logger for this class.
+   */
+  private static final Logger LOGGER
+    = Logger.getLogger(XMLValueTransform.class.getName());
+  /**
+   * Use a pooling JDBC DataSource by default.
+   */
   private BasicDataSource defaultDataSource = new BasicDataSource();
   //private DriverManagerDataSource defaultDataSource =
   //new DriverManagerDataSource();
-  /** Spring JdbcTemplate. */
+  /**
+   * Spring JdbcTemplate.
+   */
   private JdbcTemplate jdbcTemplate;
-  /** List of transforms. */
-  private final List<XMLValueTransformer> xforms =
-    new LinkedList<>();
+  /**
+   * List of transforms.
+   */
+  private final List<XMLValueTransformer> xforms
+    = new LinkedList<>();
 
   /**
    * Constructor for creating a useful <code>XMLValueTransform</code>.
@@ -110,8 +118,8 @@ public class XMLValueTransform extends AbstractPlugin {
       jdbcTemplate = new JdbcTemplate(getDefaultDataSource());
 
       // create list of value transforms from the elements list
-      final List<Node> elements =
-        doc.selectNodes("//enrich/elements/element");
+      final List<Node> elements
+        = doc.selectNodes("//enrich/elements/element");
       for (Node node : elements) {
         JdbcTemplate vttemplate = jdbcTemplate;
         final String ddriver = node.valueOf("database/driver");
@@ -170,8 +178,8 @@ public class XMLValueTransform extends AbstractPlugin {
   }
 
   /**
-   * Implementation of JMS <code>MessageListener</code> interface. Performs
-   * the work when a message is received.
+   * Implementation of JMS <code>MessageListener</code> interface. Performs the
+   * work when a message is received.
    *
    * @param message The JMS Message received.
    */

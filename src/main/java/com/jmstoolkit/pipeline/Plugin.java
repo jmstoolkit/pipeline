@@ -17,8 +17,8 @@ package com.jmstoolkit.pipeline;
 import javax.jms.MessageListener;
 
 /**
- * Interface defining the functionality of any <code>Plugin</code> managed
- * by the {@link Transformer}.
+ * Interface defining the functionality of any <code>Plugin</code> which uses
+ * JMS via the {@link javax.jms.MessageListener}.
  *
  * @author Scott Douglass
  */
@@ -36,12 +36,14 @@ public interface Plugin extends MessageListener {
 
   /**
    * Get some information about the <code>Plugin</code>.
+   *
    * @return the plugin information
    */
   String getInfo();
 
   /**
    * Gets the count of operations performed by the <code>Plugin</code>.
+   *
    * @return the count of operations
    */
   Integer getOperationCount();

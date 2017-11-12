@@ -30,8 +30,8 @@ import org.springframework.jms.core.MessagePostProcessor;
 import org.springframework.jndi.JndiTemplate;
 
 /**
- * An abstract implementation of the {@link Plugin} interface which can be
- * used as the base class for specific implementations.
+ * An abstract implementation of the {@link Plugin} interface which can be used
+ * as the base class for specific implementations.
  *
  * @author Scott Douglass
  */
@@ -61,8 +61,8 @@ public abstract class AbstractPlugin implements Plugin {
   /**
    *
    */
-  public static final String CORRELATION_ID =
-    System.getProperty(P_CORRELATION_ID, D_CORRELATION_ID);
+  public static final String CORRELATION_ID
+    = System.getProperty(P_CORRELATION_ID, D_CORRELATION_ID);
   /**
    *
    */
@@ -206,8 +206,8 @@ public abstract class AbstractPlugin implements Plugin {
 
   /**
    *
-   * @param inString
-   * @return
+   * @param inString The String to trim
+   * @return Trimmed string or empty string if inString was null
    */
   public String trim(String inString) {
     String result = "";
@@ -221,19 +221,22 @@ public abstract class AbstractPlugin implements Plugin {
    *
    */
   public class BasicMessageProcessor implements MessagePostProcessor {
+
     private String correlationId;
+
     /**
      *
-     * @param inCorrelationId
+     * @param inCorrelationId The JMS correlation ID as a String
      */
     public BasicMessageProcessor(String inCorrelationId) {
       correlationId = inCorrelationId;
     }
+
     /**
      *
-     * @param msg
-     * @return
-     * @throws JMSException
+     * @param msg the JMS Message
+     * @return The JMS Message with additional properties added
+     * @throws JMSException on JMS error
      */
     @Override
     public Message postProcessMessage(Message msg) throws JMSException {
@@ -252,7 +255,7 @@ public abstract class AbstractPlugin implements Plugin {
 
   /**
    *
-   * @param arg0
+   * @param arg0 The JMS Message received
    */
   @Override
   public abstract void onMessage(Message arg0);
@@ -307,7 +310,7 @@ public abstract class AbstractPlugin implements Plugin {
   }
 
   /**
-   * @param replyToName
+   * @param replyToName The name of the JMS Destination to reply to
    */
   public final void setReplyToName(String replyToName) {
     this.replyToName = replyToName;
@@ -335,7 +338,7 @@ public abstract class AbstractPlugin implements Plugin {
   }
 
   /**
-   * @param replyTo
+   * @param replyTo The name of the JMS Destination to reply to
    */
   public final void setReplyTo(Destination replyTo) {
     this.replyTo = replyTo;
