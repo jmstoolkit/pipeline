@@ -1,18 +1,26 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2011, Scott Douglass <scott@swdouglass.com>
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * on the World Wide Web for more details:
+ * http://www.fsf.org/licensing/licenses/gpl.txt
  */
 package com.jmstoolkit.pipeline;
 
 import com.jmstoolkit.logging.JTKLogging;
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -22,19 +30,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
-import javax.jms.Message;
 import javax.jms.MessageListener;
 import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.io.SAXReader;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jmx.export.annotation.ManagedAttribute;
-import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jndi.JndiTemplate;
 
 /**
@@ -42,64 +45,82 @@ import org.springframework.jndi.JndiTemplate;
  * @author scott
  */
 public abstract class AbstractPipeline implements MessageListener {
+
   /**
    *
    */
-  public static final Logger CONSOLE =
-    Logger.getLogger(JTKLogging.CONSOLE_LOGGER_NAME);
-  /** */
+  public static final Logger CONSOLE
+    = Logger.getLogger(JTKLogging.CONSOLE_LOGGER_NAME);
+  /**
+   *    */
   public static final String ACTION_NEW = "new";
-  /** */
+  /**
+   *    */
   public static final String ACTION_STOP = "stop";
-  /** */
+  /**
+   *    */
   public static final String ACTION_UPDATE = "update";
-  /** */
+  /**
+   *    */
   private ClassPathXmlApplicationContext applicationContext;
-  /** */
-  private final Map<String, Plugin> plugins =
-    new ConcurrentHashMap<String, Plugin>();
-  /** */
+  /**
+   *    */
+  private final Map<String, Plugin> plugins
+    = new ConcurrentHashMap<>();
+  /**
+   *    */
   private JndiTemplate jndiTemplate;
-  /** */
+  /**
+   *    */
   private JmsTemplate jmsTemplate;
-  /** */
+  /**
+   *    */
   private ConnectionFactory connectionFactory;
-  /** */
+  /**
+   *    */
   private Destination configTopic;
-  /** */
-  public static final String FILE_SEPARATOR =
-    System.getProperty("file.separator");
-  /** */
+  /**
+   *    */
+  public static final String FILE_SEPARATOR
+    = System.getProperty("file.separator");
+  /**
+   *    */
   public static final String USER_DIR = System.getProperty("user.dir");
-  /** */
+  /**
+   *    */
   private boolean validated = true;
-  /** */
+  /**
+   *    */
   private boolean persisted = true;
-  /** */
+  /**
+   *    */
   private String startupDirName = USER_DIR + FILE_SEPARATOR + "startup";
-  /** */
+  /**
+   *    */
   private String pluginDirName = USER_DIR + FILE_SEPARATOR + "plugins";
-  /** */
+  /**
+   *    */
   private Integer messageCount = 0;
-  /** */
+  /**
+   *    */
   public static final boolean USE_PLUGINS = true;
 
-   /**
+  /**
    *
    */
   public final void init() {
     if (isPersisted()) {
       final File startupDir = new File(getStartupDirName());
       if (startupDir.mkdir()) {
-        System.out.println("Failed to create startup directory: " +
-          getStartupDirName());
+        System.out.println("Failed to create startup directory: "
+          + getStartupDirName());
       }
     }
     if (USE_PLUGINS) {
       final File pluginDir = new File(pluginDirName);
       if (pluginDir.mkdir()) {
-        System.out.println("Failed to create plugin directory: " +
-          pluginDirName);
+        System.out.println("Failed to create plugin directory: "
+          + pluginDirName);
       }
     }
   }
@@ -118,10 +139,10 @@ public abstract class AbstractPipeline implements MessageListener {
       if (startupDir.isDirectory()) {
         //FIXME: use FileFilter
         final File[] startupFiles = startupDir.listFiles();
-        for (int i = 0; i < startupFiles.length; i++) {
+        for (File startupFile : startupFiles) {
           BufferedReader reader = null;
           try {
-            reader = new BufferedReader(new FileReader(startupFiles[i]));
+            reader = new BufferedReader(new FileReader(startupFile));
             final StringBuilder config = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -146,11 +167,9 @@ public abstract class AbstractPipeline implements MessageListener {
     }
   }
 
-
-
   /**
-   * Create a {@link Plugin} implementation based on the <code>type</code>
-   * in the XML message.
+   * Create a {@link Plugin} implementation based on the <code>type</code> in
+   * the XML message.
    *
    * @param doc The dom4j <code>Document</code> of the XML message.
    * @return An implementation of the <code>Plugin</code> interface.
@@ -164,8 +183,8 @@ public abstract class AbstractPipeline implements MessageListener {
     final String work = trim(doc.valueOf("//plugin/work"));
     final String inputName = trim(doc.valueOf("//plugin/destinations/input"));
     final String outputName = trim(doc.valueOf("//plugin/destinations/output"));
-    final String replyToName =
-      trim(doc.valueOf("//plugin/destinations/replyto"));
+    final String replyToName
+      = trim(doc.valueOf("//plugin/destinations/replyto"));
     final String xformJar = trim(doc.valueOf("//plugin/url"));
     try {
 
@@ -177,8 +196,8 @@ public abstract class AbstractPipeline implements MessageListener {
       if (xformJar == null || xformJar.isEmpty()) {
         // Look for Plugin implementations in the current classpath
         // and the plugins directory by default.
-        final URL[] systemURLs =
-          ((URLClassLoader) ClassLoader.getSystemClassLoader()).getURLs();
+        final URL[] systemURLs
+          = ((URLClassLoader) ClassLoader.getSystemClassLoader()).getURLs();
         xformURL.addAll(Arrays.asList(systemURLs));
       } else {
         // if specified look for an external .jar file
@@ -188,17 +207,17 @@ public abstract class AbstractPipeline implements MessageListener {
       // Use a new instance of our "child first" ClassLoader so we can reload
       // plugins, and load new ones.
       final URL[] tclurls = {};
-      final PluginClassLoader tcl =
-        new PluginClassLoader(xformURL.toArray(tclurls));
+      final PluginClassLoader tcl
+        = new PluginClassLoader(xformURL.toArray(tclurls));
       final Class transformClass = tcl.loadClass(type);
 
-      final java.lang.reflect.Constructor constructor =
-        transformClass.getConstructor(String.class, String.class, String.class,
-        String.class, String.class, ConnectionFactory.class,
-        JndiTemplate.class);
-      plugin =
-        (Plugin) constructor.newInstance(name, work, inputName, outputName,
-        replyToName, connectionFactory, jndiTemplate);
+      final java.lang.reflect.Constructor constructor
+        = transformClass.getConstructor(String.class, String.class, String.class,
+          String.class, String.class, ConnectionFactory.class,
+          JndiTemplate.class);
+      plugin
+        = (Plugin) constructor.newInstance(name, work, inputName, outputName,
+          replyToName, connectionFactory, jndiTemplate);
 
     } catch (MalformedURLException ex) {
       throw new PipelineException("Bad jar URL", ex);
@@ -232,10 +251,10 @@ public abstract class AbstractPipeline implements MessageListener {
    */
   public final void saveConfigMessage(final String name, final String xml)
     throws IOException {
-    final FileWriter writer = new FileWriter(getStartupDirName()
-      + FILE_SEPARATOR + name + ".xml");
-    writer.write(xml);
-    writer.close();
+    try (FileWriter writer = new FileWriter(getStartupDirName()
+      + FILE_SEPARATOR + name + ".xml")) {
+      writer.write(xml);
+    }
   }
 
   /**
@@ -250,10 +269,13 @@ public abstract class AbstractPipeline implements MessageListener {
     }
   }
 
-  /** @return the map of plugins. */
+  /**
+   * @return the map of plugins.
+   */
   public final Map<String, Plugin> getPlugins() {
     return plugins;
   }
+
   /**
    *
    * @param inString the String to trim
@@ -391,8 +413,6 @@ public abstract class AbstractPipeline implements MessageListener {
   public final void setMessageCount(final Integer inMessageCount) {
     this.messageCount = inMessageCount;
   }
-
-
 
   /**
    * @return the pluginDirName

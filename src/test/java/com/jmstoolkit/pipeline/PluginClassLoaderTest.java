@@ -39,8 +39,10 @@ public class PluginClassLoaderTest {
 
   @BeforeClass
   public static void setUpClass() throws Exception {
-    testPluginDirURL = new URL("file:///" + System.getProperty("user.dir") + "/src/test/resources/plugin-test/");
-    testPluginJarURL = new URL("file:///" + System.getProperty("user.dir") + "/src/test/restource/test.jar");
+    testPluginDirURL = new URL("file:///" + System.getProperty("user.dir") +
+      "/src/test/resources/plugin-test/");
+    testPluginJarURL = new URL("file:///" + System.getProperty("user.dir") +
+      "/src/test/restource/test.jar");
   }
 
   @AfterClass
@@ -57,40 +59,43 @@ public class PluginClassLoaderTest {
 
   /**
    * Test of loading class using system class loader URLs.
+   * @throws java.lang.Exception
    */
   @Test
   public void testLoadClassFromSystemClasspath() throws Exception {
     System.out.println("loadClass from system class path");
-    PluginClassLoader instance =
-      new PluginClassLoader(
-      ((URLClassLoader) ClassLoader.getSystemClassLoader()).getURLs());
+    PluginClassLoader instance
+      = new PluginClassLoader(
+        ((URLClassLoader) ClassLoader.getSystemClassLoader()).getURLs());
     Class result = instance.loadClass(SYSTEM_PLUGIN, true);
     assertEquals(SYSTEM_PLUGIN, result.getName());
   }
 
   /**
-   * Test of loading a class from the plugin path, instead of
-   * the system class path.
+   * Test of loading a class from the plugin path, instead of the system class
+   * path.
+   *
    * @throws Exception
    */
   @Test
   public void testLoadClassFromPluginDir() throws Exception {
     System.out.println("loadClass from plugin directory outside of system class path");
-    PluginClassLoader instance =
-      new PluginClassLoader(new URL[] { testPluginDirURL });
+    PluginClassLoader instance
+      = new PluginClassLoader(new URL[]{testPluginDirURL});
     Class result = instance.loadClass(FAKE_PLUGIN, true);
     assertEquals(FAKE_PLUGIN, result.getName());
   }
 
   /**
    * Test of loading a plugin from a jar file not on the system class path.
+   *
    * @throws Exception
    */
   @Test
   public void testLoadClassFromPluginJar() throws Exception {
     System.out.println("loadClass from plugin jar outside of system class path");
-    PluginClassLoader instance =
-      new PluginClassLoader(new URL[] { testPluginJarURL });
+    PluginClassLoader instance
+      = new PluginClassLoader(new URL[]{testPluginJarURL});
     Class result = instance.loadClass(FAKE_PLUGIN, true);
     assertEquals(FAKE_PLUGIN, result.getName());
   }

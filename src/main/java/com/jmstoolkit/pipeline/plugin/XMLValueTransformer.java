@@ -61,7 +61,7 @@ public class XMLValueTransformer {
   /**
    * Get one value from a database and convert it to a <code>String</code>.
    * @param where A single value to be passed to a parameterized SQL query
-   * @return A <code>String<code> representation of the single result
+   * @return A <code>String</code> representation of the single result
    * @throws DataAccessException if there's a JDBC failure
    */
   public final String getValue(final String where) throws DataAccessException {

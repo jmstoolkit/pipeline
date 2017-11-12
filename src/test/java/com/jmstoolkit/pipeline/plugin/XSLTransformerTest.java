@@ -30,9 +30,12 @@ import static org.junit.Assert.*;
  */
 public class XSLTransformerTest {
 
-  private static final String INPUT_FILE = System.getProperty("user.dir") + "/src/test/resources/test-xsl/test-input.xml";
-  private static final String RESULT_FILE = System.getProperty("user.dir") + "/src/test/resources/test-xsl/test-output.xml";
-  private static final String XSLT_FILE = System.getProperty("user.dir") + "/src/test/resources/test-xsl/test-xslt.xsl";
+  private static final String INPUT_FILE = System.getProperty("user.dir") +
+    "/src/test/resources/test-xsl/test-input.xml";
+  private static final String RESULT_FILE = System.getProperty("user.dir") +
+    "/src/test/resources/test-xsl/test-output.xml";
+  private static final String XSLT_FILE = System.getProperty("user.dir") +
+    "/src/test/resources/test-xsl/test-xslt.xsl";
   private static String INXML;
   private static String OUTXML;
   private static String XSLT;
@@ -61,6 +64,7 @@ public class XSLTransformerTest {
 
   /**
    * Test of transform method, of class XSLTransformer.
+   * @throws java.lang.Exception
    */
   @Test
   public void testTransform() throws Exception {

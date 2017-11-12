@@ -28,7 +28,6 @@ import javax.naming.NamingException;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
-import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -58,7 +57,7 @@ public class XMLValueTransform extends AbstractPlugin {
   private JdbcTemplate jdbcTemplate;
   /** List of transforms. */
   private final List<XMLValueTransformer> xforms =
-    new LinkedList<XMLValueTransformer>();
+    new LinkedList<>();
 
   /**
    * Constructor for creating a useful <code>XMLValueTransform</code>.
